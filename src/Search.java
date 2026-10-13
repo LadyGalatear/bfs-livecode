@@ -1,3 +1,5 @@
+import java.util.ArrayList;
+import java.util.List;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -56,7 +58,32 @@ public class Search {
      * @throws HungryRatException if there is no reachable cheese
      */
     public static int[] nearestCheese(char[][] maze) throws EscapedRatException, CrowdedMazeException, HungryRatException {
+        Location start = ratLocation(maze);
+        
         return null;
+    }
+
+    public static List<Location> possibleMoves(char[][] maze, Location current) {
+        int[][] moves = new int[][] {
+            {-1, 0}, // Up
+            {1, 0}, // Down
+            {0, -1}, // Left
+            {0, 1} // Right
+        };
+
+        List<Location> validMoves = new ArrayList<>();
+
+        for (int[] move : moves) {
+            Location possibleMove = new Location(current.row() + move[0], 
+                                                current.column() + move[1]);
+            if (possibleMove.row() >= 0 && possibleMove.row() < maze.length && 
+                possibleMove.column() >= 0 && possibleMove.column() < maze[0].length &&
+                maze[possibleMove.row()][possibleMove.column()] != 'w') {
+                    validMoves.add(possibleMove);
+            }
+        }
+
+        return validMoves;
     }
 
     public static Location ratLocation(char[][] maze) {
