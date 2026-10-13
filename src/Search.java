@@ -1,6 +1,8 @@
+import java.util.ArrayDeque;
 import java.util.ArrayList;
-import java.util.List;
 import java.util.HashSet;
+import java.util.List;
+import java.util.Queue;
 import java.util.Set;
 
 public class Search {
@@ -59,8 +61,28 @@ public class Search {
      */
     public static int[] nearestCheese(char[][] maze) throws EscapedRatException, CrowdedMazeException, HungryRatException {
         Location start = ratLocation(maze);
-        
-        return null;
+
+        Set<Location> visited = new HashSet<>();
+        Queue<Location> queue = new ArrayDeque<>();
+        queue.add(start);
+
+        while (!queue.isEmpty()) {
+            Location current = queue.remove();
+
+            if (visited.contains(current)) continue;
+            visited.add(current);
+
+            if (maze[current.row()][current.column()] == 'c') {
+                return new int[]{current.row(), current.column()};
+            }
+
+            List<Location> neighbors = possibleMoves(maze, current);
+            for (Location neighbor : neighbors) {
+                queue.add(neighbor);
+            }
+        }
+
+        throw new HungryRatException();
     }
 
     public static List<Location> possibleMoves(char[][] maze, Location current) {
